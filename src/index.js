@@ -14,7 +14,6 @@ const app = express();
 app.use(cors());
 
 // Built-In Middleware
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,6 +30,10 @@ app.use((req, res, next) => {
 
 
 // * Routes * //
+app.use('/key', routes.key);
+app.use('/users', routes.user);
+app.use('/playlist', routes.playlist);
+app.use('/album', routes.album);
 
 app.use('/session', routes.session);
 app.use('/users', routes.user);
