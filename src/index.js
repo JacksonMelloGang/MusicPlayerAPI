@@ -36,7 +36,7 @@ app.use('/playlist', routes.playlist);
 app.use('/album', routes.album);
 
 app.use('/session', routes.session);
-app.use('/users', routes.user);
+//app.use('/users', routes.user);
 app.use('/messages', routes.message);
 
 // * Start * //

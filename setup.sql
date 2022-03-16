@@ -17,49 +17,78 @@
 CREATE DATABASE IF NOT EXISTS `musicplayerapi` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `musicplayerapi`;
 
+-- Listage de la structure de la table musicplayerapi. album
+CREATE TABLE IF NOT EXISTS `album` (
+  `albumId` int(11) NOT NULL AUTO_INCREMENT,
+  `albumName` varchar(100) NOT NULL,
+  `albumAuthor` varchar(100) NOT NULL,
+  `albumSong` int(11) DEFAULT NULL,
+  `albumIsVisible` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`albumId`),
+  KEY `fk_albumsong` (`albumSong`),
+  CONSTRAINT `fk_albumsong` FOREIGN KEY (`albumSong`) REFERENCES `song` (`songId`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table musicplayerapi.album : ~0 rows (environ)
+/*!40000 ALTER TABLE `album` DISABLE KEYS */;
+/*!40000 ALTER TABLE `album` ENABLE KEYS */;
+
 -- Listage de la structure de la table musicplayerapi. apikey
 CREATE TABLE IF NOT EXISTS `apikey` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key` char(50) NOT NULL,
-  `ismasterkey` tinyint(1) NOT NULL,
+  `ismasterkey` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Listage des données de la table musicplayerapi.apikey : ~2 rows (environ)
+-- Listage des données de la table musicplayerapi.apikey : ~0 rows (environ)
 /*!40000 ALTER TABLE `apikey` DISABLE KEYS */;
-INSERT INTO `apikey` (`id`, `key`, `ismasterkey`) VALUES
-	(1, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n', 1),
-	(2, 'bbbb', -1);
 /*!40000 ALTER TABLE `apikey` ENABLE KEYS */;
 
 -- Listage de la structure de la table musicplayerapi. playlist
 CREATE TABLE IF NOT EXISTS `playlist` (
-  `Idplaylist` int(11) NOT NULL,
+  `playlistId` int(11) NOT NULL,
   `playlistName` varchar(250) NOT NULL DEFAULT '',
+  `playlistDescription` varchar(250) DEFAULT 'No Description',
   `playlistContent` int(11) NOT NULL DEFAULT '0',
-  `playlistAuthorId` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Idplaylist`),
-  KEY `cst_playlist` (`playlistAuthorId`)
+  `playlistAuthorId` int(11) NOT NULL,
+  PRIMARY KEY (`playlistId`),
+  KEY `fk_playlistAuthorId` (`playlistAuthorId`),
+  CONSTRAINT `fk_playlistAuthorId` FOREIGN KEY (`playlistAuthorId`) REFERENCES `user` (`userId`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table musicplayerapi.playlist : ~0 rows (environ)
 /*!40000 ALTER TABLE `playlist` DISABLE KEYS */;
 /*!40000 ALTER TABLE `playlist` ENABLE KEYS */;
 
+-- Listage de la structure de la table musicplayerapi. song
+CREATE TABLE IF NOT EXISTS `song` (
+  `songId` int(11) NOT NULL AUTO_INCREMENT,
+  `songName` varchar(50) NOT NULL,
+  `songAuthor` varchar(50) DEFAULT '',
+  PRIMARY KEY (`songId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Listage des données de la table musicplayerapi.song : ~0 rows (environ)
+/*!40000 ALTER TABLE `song` DISABLE KEYS */;
+/*!40000 ALTER TABLE `song` ENABLE KEYS */;
+
 -- Listage de la structure de la table musicplayerapi. user
 CREATE TABLE IF NOT EXISTS `user` (
-  `userId` int(11) NOT NULL,
-  `userPseudo` varchar(50) NOT NULL,
-  `userName` varchar(50) NOT NULL DEFAULT '',
-  `userLastname` varchar(50) NOT NULL DEFAULT '',
-  `userEmail` varchar(100) NOT NULL DEFAULT '',
+  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `userPseudo` varchar(50) DEFAULT NULL,
+  `userName` varchar(50) DEFAULT NULL,
+  `userLastname` varchar(50) DEFAULT NULL,
+  `userEmail` varchar(100) NOT NULL,
   `userPassword` varchar(100) NOT NULL COMMENT 'Must be hashed',
-  `userToken` varchar(100) NOT NULL DEFAULT '',
+  `userToken` varchar(100) DEFAULT '',
   `userVerifiedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `userIsAdmin` tinyint(4) DEFAULT '0',
-  `userIsPremuim` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`userId`) USING BTREE,
-  UNIQUE KEY `userPseudo` (`userPseudo`) USING BTREE
+  `userIsAdmin` tinyint(1) NOT NULL DEFAULT '0',
+  `userIsPremium` tinyint(1) NOT NULL DEFAULT '0',
+  `userIsSigner` tinyint(1) NOT NULL DEFAULT '0',
+  `userIsBanned` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `userPseudo` (`userPseudo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Listage des données de la table musicplayerapi.user : ~0 rows (environ)
@@ -72,14 +101,10 @@ CREATE TABLE IF NOT EXISTS `userverify` (
   `verifyId` int(11) NOT NULL AUTO_INCREMENT,
   `verifyToken` varchar(100) DEFAULT NULL,
   `verifyAskAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`userId`,`verifyId`),
-  UNIQUE KEY `verifyId` (`verifyId`)
+  PRIMARY KEY (`verifyId`,`userId`) USING BTREE,
+  KEY `fk_userverifyId` (`userId`),
+  CONSTRAINT `fk_userverifyId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-ALTER TABLE `playlist`
-	ADD CONSTRAINT `cst_playlist` FOREIGN KEY (`playlistAuthorId`) REFERENCES `musicplayerapi`.`user` (`userId`) ON UPDATE CASCADE ON DELETE SET NULL;
-
 
 -- Listage des données de la table musicplayerapi.userverify : ~0 rows (environ)
 /*!40000 ALTER TABLE `userverify` DISABLE KEYS */;
