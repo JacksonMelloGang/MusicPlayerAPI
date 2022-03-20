@@ -1,3 +1,4 @@
+/*
 let users = {
   1: {
     id: '1',
@@ -26,3 +27,7 @@ export default {
   users,
   messages,
 };
+*/
+import database from "../database"
+
+
