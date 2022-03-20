@@ -16,7 +16,7 @@ function generateRandomString(myLength){
 };
 
 function createnewkey(key, ismasterkey = 0){
-    sql.query("INSERT INTO `apikey`(`key`, ismasterkey) VALUES (?, ?)", [sql.escape(key), sql.escape(ismasterkey)] , function(err, result){
+    sql.query("INSERT INTO `apikey`(`key`, ismasterkey) VALUES (?, ?)", [key, sql.escape(ismasterkey)] , function(err, result){
         if(err) throw err;
         console.log("Successfully inserted new key, key id: " + result.insertId);
     });
