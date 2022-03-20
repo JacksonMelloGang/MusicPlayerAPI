@@ -1,4 +1,4 @@
-var config = require('../.env');
+var config = require('../../.env');
 const sql = require('mysql');
 
 var config = {
@@ -10,11 +10,21 @@ var config = {
 
 var pool = sql.createPool({
     connectionLimit: 100,
-    timeout: 10000,
+    timeout: 1000,
     host: config.host,
     user: config.user,
     password: config.password,
-    dbname: config.dbname
-})
+    database: config.dbname
+});
+
+pool.getConnection(function(err, pool){
+    
+    if(err){
+        console.error("Couldn't connect to the database: ", err.code);
+        console.error("__________________________________________________");
+        console.error("Complete Stacktrack:\n", err);
+        process.exit(-1);
+    }
+});
 
 module.exports = pool;
