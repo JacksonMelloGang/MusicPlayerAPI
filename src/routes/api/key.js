@@ -1,33 +1,8 @@
 import { Router } from "express";
 import sql from "../../database";
+import help from "../../misc/help";
 
 const router = Router();
-const help = {
-    "insert": {
-        "method": "PUT",
-        "routes": "/key",
-        "header": {"authorization": "masterkey"},
-        "return": "new key"
-    },
-    "delete": {
-        "method": "DELETE",
-        "routes": "/key",
-        "header": {"authorization": "masterkey"},
-        "body": "key to delete",
-        "return": "success or error"
-    },
-    "get": {
-        "method": "GET",
-        "routes": "/key",
-        "return": "new key"
-    },
-    "get": {
-        "method": "GET",
-        "routes": "/key/?{key}",
-        "body": "key",
-        "return": "information about the specified key or error"
-    }
- }
 
 function generateRandomString(myLength){
     const chars =
@@ -41,82 +16,92 @@ function generateRandomString(myLength){
     return randomString;
 };
 
-function createnewkey(key, ismasterkey = 0){
+function createnewkey(key, ismasterkey = false){
+    // define if we create a master key based on input parameter is masterkey
+    if(ismasterkey == false){ismasterkey = 0} else {ismasterkey = 1};
+
     sql.query("INSERT INTO `apikey`(`key`, ismasterkey) VALUES (?, ?)", [key, sql.escape(ismasterkey)] , function(err, result){
+        // if err return function, with err as first parameter and null as second parameter (key)
         if(err) throw err;
         console.log("Successfully inserted new key, key id: " + result.insertId);
     });
 }
 
-function isMasterkey(key, newkey=false, keyvalue=generateRandomString(30), newmasterkey=0){
+function isMasterkey(key, callback){
     var query = "SELECT ismasterkey AS allowed FROM `apikey` WHERE `key`="+sql.escape(key);
     sql.query(query, function(err, result, fields){
-        // check if key exist or not
-        if(result.length != 0){
-            // check if key has permission
-            if(result[0].allowed == 1){
-                // if we want to createa new key
-                if(newkey === true){
-                    if(key == "" || typeof key == 'undefined') return;
-                    // if we want to create a new master key or not 
-                    if(newmasterkey == 1){
-                        createnewkey(keyvalue, 1);
-                        return;
-                    } 
-                    // else just create a new key without admin permissions
-                    createnewkey(keyvalue, 0);
-                }
-            }
-        } 
+        // if error return function, with err as first parameter and null as second parameter (key)
+        if(err) callback(err, null);
 
+        //if result is not empty
+        if(result.length != 0){
+            //if provided key is a master key (==1)
+            if(result[0].allowed == 1){
+                return callback(null, true)
+            }
+        }
+        return callback(null, false);
     });    
 }
 
+function getInfoKey(key, callback){
+    var query = "SELECT * FROM `apikey` WHERE `key`="+sql.escape(key);
+    sql.query(query, function(err, result){
+        if(err) return callback(err, null);
 
+        if(result.length == 0) return callback(null, false);
+
+        callback(null, result);
+    });
+}
+
+//------------------------------------------------------------------------------------------------
+
+
+
+// Get Key Route 
 router.get('/', (req, res) => {
-    return res.status(200).json(help);
-});
+    var key = null;
 
-router.get('/:keyId', (req, res) => {
-    var keyinfo = "";
-
-    // key if not undefined, key = key from param, otherwise if req.body key is not undefined key = 
-    var key = ""
-    if(req.params['key'] !== 'undefined'){
-        key = req.params['key'];
-    } else {
-        if(req.body['key'] !== 'undefined'){
-            key = req.body['key'];
-        } else {
-            key = "nokey";
-        }
+    if(req.query['apikey'] !== 'undefined'){
+        key = req.query['apikey'];
     }
-    
-        sql.query("SELECT `key` AS iskeyin FROM `apikey` WHERE `key`=" + sql.escape(key), (err, result) => {
-            if(err) throw err;
 
-            // if no result
-            if(result.length != 0){
-                
-            }
-            res.status(200).json({"": ""});
-            return
-        });
+    if(key === null) res.status(200).json(help.keyhelp);
+
+    getInfoKey(key, function(err, keyinfo){
+        if(keyinfo == false){
+            res.status(200).json({"success": "no information about the key"});
+            return;
+        }
+
+        var masterkey = keyinfo[0].ismasterkey == 1 ? true : false;
+        var keyid = keyinfo[0].id;
+
+        res.status(200).json({"success": {
+            "id": keyid,
+            "key": key,
+            "masterkey": masterkey
+        }})
+
+    });
 });
 
 router.put('/', (req, res) => {
     // check if the key allowed to create a new key
     if(typeof req.headers['authorization'] !== 'undefined'){
-            // if parameter masterkey is present, it means he want to create a new master key, so we set ismasterkey to 1 and allow create masterkey,
-            // otherwise we just create a new key without privileges
-            let mk = req.body['masterkey'] == 1 ? 1 : 0;
-            let newmk = mk == 1 ? true : false;
-            var newkey = generateRandomString(30);
+            var key = generateRandomString(30);
 
-            isMasterkey(req.headers['authorization'], newmk, newkey, mk);
-            res.status(200).json({"success": "Key successfully created", "key": newkey.toString()});
+            var masterkey = req.body['ismasterkey'] ? true : false;
+
+            if(isMasterkey(req.headers['authorization'])){
+                createnewkey(key, true)
+                res.status(200).json({"success": "Key successfully created", "key": key.toString()});                
+            } else {
+                res.status(400).json({"error": "The key provided doesn't have permission to create a new key"});                
+            }
     } else {
-            res.status(503).json({"error": "Not allowed."});
+            res.status(400).json({"error": "Not allowed."});
     }
 });
 
