@@ -8,8 +8,7 @@ function getApiKeys(callback) {
         // return false if no result
         if(result.length == 0) return callback(null, false);
 
-
-
+        return callback(null, results);
     });
 }
 
