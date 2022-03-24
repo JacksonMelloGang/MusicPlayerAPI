@@ -1,6 +1,7 @@
 import { Router } from "express";
 import sql from "../../database";
 import help from "../../misc/help";
+import models from "../../models";
 
 const router = Router();
 
@@ -108,26 +109,13 @@ router.put('/', (req, res) => {
 router.delete('/', (req, res) => {
     if(typeof req.headers['authorization'] !== 'undefined'){
         if(typeof req.body['key'] !== 'undefined'){
-            var query = "SELECT ismasterkey AS allowed FROM `apikey` WHERE `key`="+sql.escape(req.headers['authorization']);
-            sql.query(query, function(err, result, fields){
-                if(err) throw err;
-                // check if key exist or not
-                if(result.length != 0){
-                    // check if key has permission
-                    if(result[0].allowed == 1){
-    
-                        sql.query("DELETE FROM `apikey` WHERE `key`="+sql.escape(req.body['key']), function(err, results){
-                            if(err) res.status(503).json({"error": "Couldn't delete key: " + req.body['key'], "details":err.message});
-                            if(results.affectedRows == 0){
-                                res.status(404).json({"error": "key not found in database"});
-                            } else {
-                                res.status(200).json({"success": "succesfully deleted key " + results.affectedRows});
-                            }
-                            return;
-                        });
-                    }
-                } 
-            });   
+            models.apikey.delete(req.body['key'], function(err, result){
+                if(result){
+                    res.status(200).json({"success": "succesfully deleted key " + req.body['key']});
+                } else {
+                    res.status(404).json({"error": "key not found in database"});
+                }
+            });
         } else {
             res.status(503).json({"error": "API key to delete not specified"});
         }

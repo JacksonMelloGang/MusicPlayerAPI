@@ -1,13 +1,15 @@
 # Simple Node with Express Server with REST API
 
-[![Build Status](https://travis-ci.org/rwieruch/node-express-server-rest-api.svg?branch=master)](https://travis-ci.org/rwieruch/node-express-server-rest-api) [![Slack](https://slack-the-road-to-learn-react.wieruch.com/badge.svg)](https://slack-the-road-to-learn-react.wieruch.com/) [![Greenkeeper badge](https://badges.greenkeeper.io/rwieruch/node-express-server-rest-api.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/rwieruch/node-express-server-rest-api.svg?branch=master)](https://travis-ci.org/rwieruch/node-express-server-rest-api) 
+[![Slack](https://slack-the-road-to-learn-react.wieruch.com/badge.svg)](https://slack-the-road-to-learn-react.wieruch.com/) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rwieruch/node-express-server-rest-api.svg)](https://greenkeeper.io/)
 
-An easy way to get started with a Express server offering a REST API with Node.js. [Read more about it.](https://www.robinwieruch.de/node-express-server-rest-api)
 
-## Features
+## Description
 
-- Express
-- REST API
+*Hey Thanks for looking at my project !*
+Here is a **REST API** I made for my project used to make an MusicPlayer like *Spotify* or *Youtube Music*
+It's my first API ever made so you should check if i did any big mistakes 😋
 
 ## Requirements
 
@@ -16,18 +18,18 @@ An easy way to get started with a Express server offering a REST API with Node.j
 
 ## Installation
 
-- `git clone git@github.com:rwieruch/node-express-server-rest-api.git`
-- `cd node-express-server-rest-api`
+- `git clone https://github.com/JacksonMelloGang/MusicPlayerAPI.git`
+- `Import setup.sql in your SQL Server`
 - `npm install`
 - `npm start`
 
-### Tree
+## Tree
 
-## GET Routes
+### GET Routes
 
-## POST Routes
+### POST Routes
 
-## Beyond GET Routes
+### Beyond GET Routes
 
 ### CURL
 
