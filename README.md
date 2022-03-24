@@ -11,7 +11,7 @@ An easy way to get started with a Express server offering a REST API with Node.j
 
 ## Requirements
 
-- [node & npm](https://nodejs.org/en/)
+- [node & npm](https://nodejs.org/en/) (8.5 / v16.14.2)
 - [git](https://www.robinwieruch.de/git-essential-commands/)
 
 ## Installation
@@ -20,33 +20,18 @@ An easy way to get started with a Express server offering a REST API with Node.j
 - `cd node-express-server-rest-api`
 - `npm install`
 - `npm start`
-- optional: include _.env_ in your _.gitignore_
 
-### GET Routes
+### Tree
 
-- visit http://localhost:3000
-  - /messages
-  - /messages/1
-  - /users
-  - /users/1
+## GET Routes
 
-### Beyond GET Routes
+## POST Routes
 
-#### CURL
+## Beyond GET Routes
+
+### CURL
 
 - Create a message with:
   - `curl -X POST -H "Content-Type:application/json" http://localhost:3000/messages -d '{"text":"Hi again, World"}'`
 - Delete a message with:
   - `curl -X DELETE -H "Content-Type:application/json" http://localhost:3000/messages/1`
-
-#### Postman
-
-- Install [Postman](https://www.getpostman.com/apps) to interact with REST API
-- Create a message with:
-  - URL: http://localhost:3000/messages
-  - Method: POST
-  - Body: raw + JSON (application/json)
-  - Body Content: `{ "text": "Hi again, World" }`
-- Delete a message with:
-  - URL: http://localhost:3000/messages/1
-  - Method: DELETE

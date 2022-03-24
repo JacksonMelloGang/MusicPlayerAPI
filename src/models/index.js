@@ -35,7 +35,6 @@ import playlist from "./playlistmodel.js";
 import user from "./usermodel.js";
 
 module.exports = {
-
   apikey: apikey,
   album: album,
   playlist: playlist,
