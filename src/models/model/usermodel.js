@@ -1,4 +1,4 @@
-import sql from "../../database/";
+import sql from "../database/";
 
 function getUsersInfos(callback) {
     var query = "SELECT * FROM `user`;"
@@ -207,4 +207,4 @@ export default {
     lastname: getUserLastName,
     name: getUserName,
     pseudo: getUserPseudo
-} 
+}
