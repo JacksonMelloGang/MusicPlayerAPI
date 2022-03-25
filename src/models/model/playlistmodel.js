@@ -1,1 +1,1 @@
-import sql from "../../database/";
+import sql from "../database/";
