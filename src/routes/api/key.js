@@ -1,7 +1,7 @@
 import { Router } from "express";
 import sql from "../../database";
 import help from "../../misc/help";
-import models from "../../models";
+import model from "../../models";
 
 const router = Router();
 
@@ -45,16 +45,7 @@ function isMasterkey(key, callback){
     });    
 }
 
-function getInfoKey(key, callback){
-    var query = "SELECT * FROM `apikey` WHERE `key`="+sql.escape(key);
-    sql.query(query, function(err, result){
-        if(err) return callback(err, null);
 
-        if(result.length == 0) return callback(null, false);
-
-        callback(null, result);
-    });
-}
 
 //------------------------------------------------------------------------------------------------
 
@@ -64,13 +55,13 @@ function getInfoKey(key, callback){
 router.get('/', (req, res) => {
     var key = null;
 
-    if(req.query['apikey'] !== 'undefined'){
+    if(req.query['apikey'] == 'undefined'){
         key = req.query['apikey'];
+    } else {
+        return res.status(200).json(help.keyhelp);
     }
 
-    if(key === null) res.status(200).json(help.keyhelp);
-
-    getInfoKey(key, function(err, keyinfo){
+    model.apikey.keyinfo(key, function(err, keyinfo){
         if(keyinfo == false){
             res.status(200).json({"success": "no information about the key"});
             return;

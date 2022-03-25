@@ -24,6 +24,18 @@ function getKeyId(key, callback){
     })
 }
 
+function getKeyInfo(key, callback){
+    var query = "SELECT * FROM `apikey` WHERE `key`=?";
+    sql.query(query, [key], function(err, result){
+        if(err) return callback(err, null);
+
+        // return false if no result
+        if(result.length == 0) return callback(null, false);
+
+        return callback(null, result);
+    });
+}
+
 function getKey(keyid, callback){
     var query = "SELECT `key` FROM `apikey` WHERE `id`=?";
 
@@ -77,6 +89,7 @@ export default {
     keys: getApiKeys,
     keyid: getKeyId,
     key: getKey,
+    keyinfo: getKeyInfo,
     ismasterkey: isMasterkey,
     delete: DeleteKey,
     create: CreateKey
