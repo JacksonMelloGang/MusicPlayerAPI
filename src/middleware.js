@@ -26,7 +26,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", (req,res, next) => {
+/*
+app.use("/", (req, res, next) => {
   writelog("Got Connection from " + req.ip.toString());
   let token = req.headers['authorization'];
   let query = "SELECT `key` FROM apikey WHERE `key`="+database.escape(token);
@@ -44,3 +45,4 @@ app.use("/", (req,res, next) => {
       }
   });
 });
+*/

@@ -3,6 +3,7 @@ const keyhelp = {
         "method": "PUT",
         "routes": "/key",
         "header": {"authorization": "masterkey"},
+        "body": {"masterkey": "1 | 0"},
         "return": "new key"
     },
     "delete": {
