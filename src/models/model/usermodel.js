@@ -207,4 +207,4 @@ export default {
     lastname: getUserLastName,
     name: getUserName,
     pseudo: getUserPseudo
-}
+} 
