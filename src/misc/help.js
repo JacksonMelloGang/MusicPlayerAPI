@@ -25,7 +25,12 @@ const keyhelp = {
     }
 };
 
+const songhelp = {
+
+}
+
 
 module.exports = {
     keyhelp : keyhelp,
+    songhelp: songhelp,
 }

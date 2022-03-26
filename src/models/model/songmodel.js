@@ -57,9 +57,9 @@ function getSongAuthor(songName, callback){
     });
 }
 
-function CreateSong(songName, authorName="Unknow Author", callback){
-    var query = "INSERT INTO song(songName, songAuthor) VALUES(?, ?);";
-    sql.query(query, [songName, authorName], function(err, result){
+function CreateSong(songName, authorName="Unknow Author", songFileName, callback){
+    var query = "INSERT INTO song(songFileName, songName, songAuthor) VALUES(?, ?, ?);";
+    sql.query(query, [songFileName, songName, authorName], function(err, result){
         if(err) return callback(err.code, null);
 
         if(result.length == 0) return callback(null, false);
@@ -82,7 +82,7 @@ function DeleteSong(songName){
 export default {
     songs: getSongs,
     song: getSong,
-    songAuthor: getSongsByAuthorName,
+    songbyauthor: getSongsByAuthorName,
     name: getSongName,
     author: getSongAuthor,
     create: CreateSong,

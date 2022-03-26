@@ -7,6 +7,7 @@ import user from './api/user';
 import playlist from './api/playlist';
 import album from './api/album';
 import comment from './api/comment';
+import song from './api/song';
 
 export default {
   user,
@@ -14,6 +15,8 @@ export default {
   playlist,
   album,
   comment,
+  song,
+  
   session,
   message
 };
