@@ -1,4 +1,4 @@
-import sql from "../database/";
+import sql from "../../database/";
 
 function getApiKeys(callback) {
     var query = "SELECT * FROM `apikey`;";
