@@ -121,9 +121,9 @@
         </button>       
       </div>
       
-      <p id="title-song" class="hide">Not Playing</p>
+      <p id="title-song">Not Playing</p>
     </div>
-    <span id="refresh-status">None</span>
+    <span class="hide" id="refresh-status">None</span>
     <script src="./js/app.js"></script>
     <script>
       function savemusic(){
@@ -133,7 +133,6 @@
       
       $('#refresh-button').on('click', function(){
         var status = $('#refresh-status');
-        status.fadeOut(1000);
         status.text = "Succesfully Refreshed";
         status.removeClass('hide');
         status.addClass('success');
