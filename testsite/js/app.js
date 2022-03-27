@@ -1,12 +1,12 @@
-var title = document.getElementsByName("title")[0];
-        var author = document.getElementsByName("author")[0];
-        var file = document.getElementsByName("musicfile")[0];
+      var title = document.getElementsByName("title")[0];
+      var author = document.getElementsByName("author")[0];
+      var file = document.getElementsByName("musicfile")[0];
 
-        file.addEventListener("input", function (event) {
-          title.value = file.value
-            .split("\\")
-            [file.value.split("\\").length - 1].substring(0, 35);
-        });
+      file.addEventListener("input", function (event) {
+        title.value = file.value
+          .split("\\")
+          [file.value.split("\\").length - 1].substring(0, 35);
+      });
 
       function setmusic(){
         var music = localStorage.getItem('latestmusic') !== undefined ? localStorage.getItem('latestmusic') : undefined;
@@ -20,6 +20,7 @@ var title = document.getElementsByName("title")[0];
       document.addEventListener('DOMContentLoaded', (e) => {
         aaaa();
       })
+
 
       function aaaa() {
        $.ajax({

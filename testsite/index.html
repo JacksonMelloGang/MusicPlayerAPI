@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
     <style>
       body {
@@ -12,6 +14,17 @@
         margin: auto;
         background-color: #0665a2;
       }
+      #refresh-button {
+        border: none;
+        height: 5vh;
+        width: 30%;
+        background-color: rgb(7, 102, 12);
+      }
+
+      #refresh-button:hover {
+        cursor: pointer;
+      }
+
       #list {
         display: flex;
         justify-content: center;
@@ -58,6 +71,20 @@
         align-self: center;
       }
 
+      #refresh-status {
+      }
+
+      .success {
+        display: flex;
+        position: absolute;
+        bottom: 10vh;
+        right: 50%;
+        background-color: green;
+      }
+      .hide {
+        display: none;
+      }
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
   
@@ -94,17 +121,25 @@
         </button>       
       </div>
       
-      <p id="title-song">Not Playing</p>
+      <p id="title-song" class="hide">Not Playing</p>
     </div>
-
+    <span id="refresh-status">None</span>
     <script src="./js/app.js"></script>
     <script>
       function savemusic(){
         localStorage.setItem('audiotime', document.getElementById('audiosrc').currentTime);
         return "aaaa"
       }
+      
+      $('#refresh-button').on('click', function(){
+        var status = $('#refresh-status');
+        status.fadeOut(1000);
+        status.text = "Succesfully Refreshed";
+        status.removeClass('hide');
+        status.addClass('success');
+        status.fadeIn(4000);
+      });
+
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   </body>
 </html>
