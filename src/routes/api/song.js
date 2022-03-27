@@ -3,8 +3,10 @@ const multer  = require('multer');
 const path = require('path');
 import help from "../../misc/help";
 import model from "../../models"
+const fs = require('fs');
 
 var date = Date.now();
+var filename = "";
 
 const storage = multer.diskStorage({
 
@@ -13,7 +15,8 @@ const storage = multer.diskStorage({
     },
     filename: function(req, file, cb){
         date = Date.now();
-        cb(null, date  + path.extname(file.originalname));
+        filename = date  + path.extname(file.originalname);
+        cb(null, filename);
     }
 });
 
@@ -41,10 +44,10 @@ router.get('/', (req, res) => {
             result.forEach(element => {
                 jsonresult[i] = {
                     id: element.songId,
-                    file: element.songFileName+".mp3",
+                    file: element.songFileName,
                     name: element.songName,
                     author: element.songAuthor,
-                    url: `http://localhost:${process.env.PORT}/`+element.songFileName+'.mp3'
+                    url: `http://localhost:${process.env.PORT}/`+element.songFileName
                 }
                 i++;
             });
@@ -69,14 +72,14 @@ router.post('/', upload.single('musicfile'), function(req, res, next) {
     }
 
     // check if any file have been provided
-    if(typeof req.file === undefined || req.file == ""){
+    if(typeof req.file === undefined || req.file == "" || req.file == null){
         return res.status(401).json({error: "Where is my song file !"});
     }
 
     var songTitle = req.body['title'] !== undefined ? req.body['title'] : "";
     var songAuthor = req.body['author'] !== undefined ? req.body['author'] : "Unknow Author";
 
-    model.song.create(songTitle, songAuthor, date, function(err, result){
+    model.song.create(songTitle, songAuthor, filename, function(err, result){
         if(err) return res.status(500).json({error: err});
 
         if(result){
