@@ -1,12 +1,11 @@
-      var title = document.getElementsByName("title")[0];
-      var author = document.getElementsByName("author")[0];
-      var file = document.getElementsByName("musicfile")[0];
-
-      file.addEventListener("input", function (event) {
-        title.value = file.value
-          .split("\\")
-          [file.value.split("\\").length - 1].substring(0, 35);
+      $('#refresh-button').on('click', function(){
+        var status = $('#refresh-status');
+        status.text = "Succesfully Refreshed";
+        status.removeClass('hide');
+        status.addClass('success');
+        status.fadeIn(4000);
       });
+
 
       function setmusic(){
         var music = localStorage.getItem('latestmusic') !== undefined ? localStorage.getItem('latestmusic') : undefined;

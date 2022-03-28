@@ -1,0 +1,60 @@
+body {
+    margin: auto;
+    background-color: #0665a2;
+    color: rgb(219, 201, 201);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.content {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    width: 50%;
+
+    background-color: #034d7a;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgb(28, 151, 131);
+    border: none;
+}
+
+form input[type="submit"]{
+    width: 30%;
+    border-radius: 10px;
+    background-color: rgb(47, 124, 53);
+    border: none;
+    box-shadow: 1px 2px 5px rgb(30, 90, 35);
+}
+form input[type="file"]{
+    background-color: rgb(77, 18, 116);
+}
+
+#songdetail {
+    display: flex;
+    justify-content: center;   
+}
+
+#songdetail label,
+#songdetail input {
+    margin-right: 10px;
+    margin-left: 10px;
+}

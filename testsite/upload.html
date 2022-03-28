@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/upload.css" type="text/css" rel="stylesheet">
+    <title>Upload</title>
+</head>
+<body>
+    <div class="content">
+        <form action="http://localhost:3001/song" method="post" enctype="multipart/form-data">
+            <div id="songdetail">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" placeholder="Title"/><br />
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" name="author" placeholder="Author"/><br />    
+                </div>
+            </div>
+            <input type="file" name="musicfile"/><br/>
+            <input type="submit" name="" />
+        </form>    
+    </div>
+    <script>
+      var title = document.getElementsByName("title")[0];
+      var author = document.getElementsByName("author")[0];
+      var file = document.getElementsByName("musicfile")[0];
+      
+      file.addEventListener("input", function (event) {
+        title.value = file.value
+          .split("\\")
+          [file.value.split("\\").length - 1].substring(0, 35);
+      });
+    </script>
+</body>
+</html>
